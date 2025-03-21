@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en, zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <link rel="stylesheet" href="public/css/normalize.css">
+    <link rel="stylesheet" href="public/css/choices.min.css">
+    <link rel="stylesheet" href="public/css/main.css">
+
+    <title>TANet</title>
+</head>
+
+<body>
+<div class="wrapper">
+    
+    <header class="header">
+        <div class="container header__container">
+            <a href="#" class="logo header__logo" id="home-button">
+                <img src="public/images/logo.svg" alt="TANet Logo" class="logo__img">
+                <span class="logo__text">TANet</span>
+            </a>
+            <div class="header__buttons">
+                <a href="get_user_guide" class="btn-reset header__btn popup_link" id="btn-release__note" download>Release Note</a>
+                <button class="btn-reset header__btn popup-link" data-path="popup-joinroom" id="btn-join__room">Join
+                    Room
+                </button>
+                <button class="btn-reset header__btn popup-link hidden" id="btn-local">Local Test</button>
+                <button class="btn-reset header__btn popup-link hidden" data-path="popup-web2web" id="btn-web2web">
+                    Web2Web Test
+                </button>
+                <select name="language" class="select" id="language__select">
+                    <option value="zh">中文</option>
+                    <option value="en">English</option>
+                </select>
+                <div class="userIconDropdown">
+                    <button class="dropdown" id="btn-dropdown"></button>
+                    <div id="div-no_login" class="dropdown-content">
+                        <div class="single_sign-on">
+                            <img src="public/images/openID.png" alt="Open ID" width="24" height="24" align="center">
+                            <a class="btn-reset popup-link" data-path="popup-login-none" id="btn-login">Single sign-on for education system</a>
+                        </div>
+                    </div>
+                    <div id="div-login" class="dropdown-content">
+                        <a class="btn-reset  popup-link" id="btn-history">History</a>
+                        <a class="btn-reset  popup-link" id="btn-become-master">Become Master</a>
+                        <a class="btn-reset  popup-link" data-label="high-speed__title" data-path="popup-high-speed" id="btn-high-speed" hidden>High-Speed test account list</a>
+                        <a class="btn-reset  popup-link" id="btn-logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="testmode__container">
+        <div class="testmode__button__div">
+            <button data-id="testmode" type="button" data-select="1" data-value="0">
+                <div id="testmode__u2s">User → Server</div>
+            </button>
+        </div>
+        <div class="testmode__button__div">
+            <button data-id="testmode" type="button" data-select="0" data-value="1">
+                <div id="testmode__s2s">Server → Server</div>
+            </button>
+        </div>
+        <div class="testmode__button__div right">
+            <button data-id="testmode" type="button" data-select="0" data-value="2">
+                <div id="testmode__s2w">Server → Website</div>
+            </button>
+        </div>
+    </section>
+
+    <main>
+
+        
+        <section class="speed-test">
+            <div class="container">
+                <h1 class="speed-test__title" id="speed_test_title">TANet - SpeedTest</h1>
+                
+                <div class="server_info_parent">
+                    <div class="server_info" id="test__params">
+                        <div class="top">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td rowspan="2" valign="center"><img src="public/images/ipv4.svg"></td>
+                                        <td>
+                                            <span class="info__category">IPv4: </span>
+                                            <span class="test-info__category hidden" id="public__ipv4__failed">&nbsp;</span>
+                                            <span class="test-info__category" id="public__ipv4">&nbsp;</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="test-info__category" id="isp4">&nbsp;</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td rowspan="2" valign="center"><img src="public/images/ipv6.svg"></td>
+                                        <td>
+                                            <span class="test">IPv6: </span>
+                                            <span class="test-info__category hidden" id="public__ipv6__failed">&nbsp;</span>
+                                            <span class="test-info__category" id="public__ipv6">&nbsp;</span>                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="test-info__category" id="isp6"></span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td valign="center"><img src="public/images/time.svg"></td>
+                                        <td>
+                                            <span class="test-info__category" id="label-time__text">Time:</span>
+                                            <span class="test-info__category" id="client__clock">&nbsp;</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td valign="center"><img src="public/images/run.svg"></td>
+                                        <td>
+                                            <span class="test-info__category" id="label-runid__text">Run ID:</span>
+                                            <span class="test-info__category" id="runid">&nbsp;</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="test_zone">
+                    <div class="server">
+                        <ul class="server__list list-reset">
+                            <li class="server__item">
+                                <div class="server__count"></div>
+                                <h3 class="server__caption" id="label-server__text">Server</h3>
+                                <select name="server-name" class="select" id="server__select" disabled>
+                                </select>
+                            </li>
+
+                            <li class="server__item hidden">
+                                <div class="server__count"></div>
+                                <h3 class="server__caption" id="label-server__satrt__text">Server start</h3>
+                                <div>
+                                    <select name="server-name" class="select" id="server__select_start" disabled></select>
+                                    <button id="server__button_change">
+                                        <img src="public/images/lets-icons_sort-arrow.svg">
+                                    </button>
+                                </div>                                
+                            </li>
+
+                            <li class="server__item hidden">
+                                <div class="server__count"></div>
+                                <h3 class="server__caption" id="label-server__end__text">Server end</h3>
+                                <select name="server-name" class="select" id="server__select_end" disabled>
+                                </select>
+                            </li>
+
+                            <li class="server__item thread hidden">
+                                <div class="server__count"></div>
+                                <h3 class="server__caption" id="label-rate__text">Select rate</h3>
+                                <select name="server-thread" class="select server-thread" id="speed__limit__select">
+                                    <option value=10>10 Gbps</option>
+                                    <option value=100>100 Gbps</option>
+                                </select>
+                            </li>
+
+                            <li class="server__item thread">
+                                <div class="server__count"></div>
+                                <h3 class="server__caption" id="label-thread__text">Thread #</h3>
+                                <select name="server-thread" class="select server-thread" id="thread-number__select">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=4>4</option>
+                                </select>
+                            </li>
+
+                            <li class="server__item hidden">
+                                <div class="server__count"></div>
+                                <h3 class="server__caption" id="label-server__satrt__web__text">Server start</h3>
+                                <select name="server-name" class="select" id="server__select_web_start" disabled>
+                                </select>                               
+                            </li>
+
+                            <li class="server__item hidden">
+                                <div class="server__count"></div>
+                                <h3 class="server__caption" id="label-server__urlip__text">Destination URL or IP</h3>
+                                <input class="form__input" placeholder="Please enter the URL or IP" id="server__select_website" />
+                            </li>
+    
+                            <li class="server__item">
+                                <div class="server__count"></div>
+                                <h3 class="server__caption" id="label-run__text">Run</h3>
+                                <button class="btn-reset server__btn" id="btn-start">Start</button>
+                                <button class="btn-reset server__btn" id="btn-wait" hidden>Please wait</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>                
+                <div class="test_zone_line">
+                    <div></div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="test-results" id="test__results" hidden>
+            <div class="container">
+                
+                <div class="test-table">
+                    <div class="test-table__captions-left">
+                        <span class="test-table__title test-table__title--ipv4">IPv4</span>
+                        <span class="test-table__title test-table__title--ipv6" id="ip__v6__title">IPv6</span>
+                    </div>
+                    <div class="test-table__table">
+                        <div class="test-table__col">
+                            <span class="test-table__caption" id="label-download__text">Download</span>
+                            <span class="test-table__value test-table__value--ipv4" id="down__value--ipv4">-</span>
+                            <span class="test-table__value test-table__value--ipv6" id="down__value--ipv6">-</span>
+                            <span class="test-table__unit">Mbps</span>
+                        </div>
+                        <div class="test-table__col">
+                            <span class="test-table__caption" id="label-upload__text">Upload</span>
+                            <span class="test-table__value test-table__value--ipv4" id="upl__value--ipv4">-</span>
+                            <span class="test-table__value test-table__value--ipv6" id="upl__value--ipv6">-</span>
+                            <span class="test-table__unit">Mbps</span>
+                        </div>
+                        <div class="test-table__col">
+                            <span class="test-table__caption" id="label-ping__text">Ping</span>
+                            <span class="test-table__value test-table__value--ipv4" id="ping__value--ipv4">-</span>
+                            <span class="test-table__value test-table__value--ipv6" id="ping__value--ipv6">-</span>
+                            <span class="test-table__unit">ms</span>
+                        </div>
+                        <div class="test-table__col">
+                            <span class="test-table__caption" id="label-jitter__text">Jitter</span>
+                            <span class="test-table__value test-table__value--ipv4" id="jit__value--ipv4">-</span>
+                            <span class="test-table__value test-table__value--ipv6" id="jit__value--ipv6">-</span>
+                            <span class="test-table__unit">ms</span>
+                        </div>
+                        <div class="test-table__col" id="udp__ping-wrapper">
+                            <span class="test-table__caption" id="label-webrtc__text">Ping UDP</span>
+                            <span class="test-table__value test-table__value--ipv4" id="webrtc__value--ipv4">-</span>
+                            <span class="test-table__value test-table__value--ipv6" id="webrtc__value--ipv6">-</span>
+                            <span class="test-table__unit">ms</span>
+                        </div>
+                        <div class="test-table__col" id="packet__lost-wrapper">
+                            <span class="test-table__caption" id="label-lost__text">Lost</span>
+                            <span class="test-table__value test-table__value--ipv4" id="lost__value--ipv4">-</span>
+                            <span class="test-table__value test-table__value--ipv6" id="lost__value--ipv6">-</span>
+                            <span class="test-table__unit">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="memo__container" id="test-memo" hidden>
+                    <input type="text" id="memo__input">
+                    <div>
+                        <button class="btn-reset test-memo__btn" id="btn-upload__memo">Storing test results</button>
+                        <span id="btn-upload__memo_span">(Login permission required)</span>
+                    </div>
+                </div>
+
+                <h4 class="graphs__caption graphs__caption--ipv4" id="charts__title__ip_v4">
+                    IPv4
+                </h4>
+                <div class="graphs" id="charts__ip_v4">
+                    <div class="graphs__img" id="chart__ping-IPv4"></div>
+                    <div class="graphs__img" id="chart__jitter-IPv4"></div>
+                    <div class="graphs__img" id="chart__download-IPv4"></div>
+                    <div class="graphs__img" id="chart__upload-IPv4"></div>
+                    <div class="graphs__img" id="chart__ping-webrtc-IPv4"></div>
+                </div>
+
+                <h4 class="graphs__caption graphs__caption--ipv6" id="charts__title__ip_v6">
+                    IPv6
+                </h4>
+                <div class="graphs" id="charts__ip_v6">
+                    <div class="graphs__img" id="chart__ping-IPv6"></div>
+                    <div class="graphs__img" id="chart__jitter-IPv6"></div>
+                    <div class="graphs__img" id="chart__download-IPv6"></div>
+                    <div class="graphs__img" id="chart__upload-IPv6"></div>
+                    <div class="graphs__img" id="chart__ping-webrtc-IPv6"></div>
+                </div>
+
+                <h2 class="test-results__title"><span id="label-test__results__v4">Test results IPv4</span>
+                    <button class="btn-reset test-results__download" id="download-results-ipv4__button"></button>
+                </h2>
+
+                
+                <div class="test-result__table table-result" id="test__results__lat__ip_v4">
+                    <span class="table-result__caption-left"></span>
+                    <span class="table-result__caption">1</span>
+                    <span class="table-result__caption">2</span>
+                    <span class="table-result__caption">3</span>
+                    <span class="table-result__caption">4</span>
+                    <span class="table-result__caption">5</span>
+                    <span class="table-result__caption">6</span>
+                    <span class="table-result__caption">7</span>
+                    <span class="table-result__caption">8</span>
+                    <span class="table-result__caption">9</span>
+                    <span class="table-result__caption">10</span>
+                    <span class="table-result__caption">11</span>
+                    <span class="table-result__caption">12</span>
+                    <span class="table-result__caption">13</span>
+                    <span class="table-result__caption">14</span>
+                    <span class="table-result__caption">15</span>
+                    <span class="table-result__caption">16</span>
+                    <span class="table-result__caption">17</span>
+                    <span class="table-result__caption">18</span>
+                    <span class="table-result__caption">19</span>
+                    <span class="table-result__caption">20</span>
+                    <span class="table-result__caption">Min</span>
+                    <span class="table-result__caption">Max</span>
+                    <span class="table-result__caption">Variance</span>
+
+                    <span class="table-result__caption-left">Delay (ms)</span>
+                    <span class="table-result__value" id="p-ipv4-t1">-</span>
+                    <span class="table-result__value" id="p-ipv4-t2">-</span>
+                    <span class="table-result__value" id="p-ipv4-t3">-</span>
+                    <span class="table-result__value" id="p-ipv4-t4">-</span>
+                    <span class="table-result__value" id="p-ipv4-t5">-</span>
+                    <span class="table-result__value" id="p-ipv4-t6">-</span>
+                    <span class="table-result__value" id="p-ipv4-t7">-</span>
+                    <span class="table-result__value" id="p-ipv4-t8">-</span>
+                    <span class="table-result__value" id="p-ipv4-t9">-</span>
+                    <span class="table-result__value" id="p-ipv4-t10">-</span>
+                    <span class="table-result__value" id="p-ipv4-t11">-</span>
+                    <span class="table-result__value" id="p-ipv4-t12">-</span>
+                    <span class="table-result__value" id="p-ipv4-t13">-</span>
+                    <span class="table-result__value" id="p-ipv4-t14">-</span>
+                    <span class="table-result__value" id="p-ipv4-t15">-</span>
+                    <span class="table-result__value" id="p-ipv4-t16">-</span>
+                    <span class="table-result__value" id="p-ipv4-t17">-</span>
+                    <span class="table-result__value" id="p-ipv4-t18">-</span>
+                    <span class="table-result__value" id="p-ipv4-t19">-</span>
+                    <span class="table-result__value" id="p-ipv4-t20">-</span>
+                    <span class="table-result__value" id="p-ipv4-min">-</span>
+                    <span class="table-result__value" id="p-ipv4-max">-</span>
+                    <span class="table-result__value" id="p-ipv4-var">-</span>
+
+                    <span class="table-result__caption-left caption-left">Jitter (ms)</span>
+                    <span class="table-result__value" id="j-ipv4-t1">-</span>
+                    <span class="table-result__value" id="j-ipv4-t2">-</span>
+                    <span class="table-result__value" id="j-ipv4-t3">-</span>
+                    <span class="table-result__value" id="j-ipv4-t4">-</span>
+                    <span class="table-result__value" id="j-ipv4-t5">-</span>
+                    <span class="table-result__value" id="j-ipv4-t6">-</span>
+                    <span class="table-result__value" id="j-ipv4-t7">-</span>
+                    <span class="table-result__value" id="j-ipv4-t8">-</span>
+                    <span class="table-result__value" id="j-ipv4-t9">-</span>
+                    <span class="table-result__value" id="j-ipv4-t10">-</span>
+                    <span class="table-result__value" id="j-ipv4-t11">-</span>
+                    <span class="table-result__value" id="j-ipv4-t12">-</span>
+                    <span class="table-result__value" id="j-ipv4-t13">-</span>
+                    <span class="table-result__value" id="j-ipv4-t14">-</span>
+                    <span class="table-result__value" id="j-ipv4-t15">-</span>
+                    <span class="table-result__value" id="j-ipv4-t16">-</span>
+                    <span class="table-result__value" id="j-ipv4-t17">-</span>
+                    <span class="table-result__value" id="j-ipv4-t18">-</span>
+                    <span class="table-result__value" id="j-ipv4-t19">-</span>
+                    <span class="table-result__value" id="j-ipv4-t20">-</span>
+                    <span class="table-result__value" id="j-ipv4-min">-</span>
+                    <span class="table-result__value" id="j-ipv4-max">-</span>
+                    <span class="table-result__value" id="j-ipv4-var">-</span>
+
+                    <span class="table-result__caption-left caption-left" id="ping__udp4-caption">Ping UDP (ms)</span>
+                    <span class="table-result__value" id="w-ipv4-t1">-</span>
+                    <span class="table-result__value" id="w-ipv4-t2">-</span>
+                    <span class="table-result__value" id="w-ipv4-t3">-</span>
+                    <span class="table-result__value" id="w-ipv4-t4">-</span>
+                    <span class="table-result__value" id="w-ipv4-t5">-</span>
+                    <span class="table-result__value" id="w-ipv4-t6">-</span>
+                    <span class="table-result__value" id="w-ipv4-t7">-</span>
+                    <span class="table-result__value" id="w-ipv4-t8">-</span>
+                    <span class="table-result__value" id="w-ipv4-t9">-</span>
+                    <span class="table-result__value" id="w-ipv4-t10">-</span>
+                    <span class="table-result__value" id="w-ipv4-t11">-</span>
+                    <span class="table-result__value" id="w-ipv4-t12">-</span>
+                    <span class="table-result__value" id="w-ipv4-t13">-</span>
+                    <span class="table-result__value" id="w-ipv4-t14">-</span>
+                    <span class="table-result__value" id="w-ipv4-t15">-</span>
+                    <span class="table-result__value" id="w-ipv4-t16">-</span>
+                    <span class="table-result__value" id="w-ipv4-t17">-</span>
+                    <span class="table-result__value" id="w-ipv4-t18">-</span>
+                    <span class="table-result__value" id="w-ipv4-t19">-</span>
+                    <span class="table-result__value" id="w-ipv4-t20">-</span>
+                    <span class="table-result__value" id="w-ipv4-min">-</span>
+                    <span class="table-result__value" id="w-ipv4-max">-</span>
+                    <span class="table-result__value" id="w-ipv4-var">-</span>
+                </div>
+
+                
+                <div class="test-result__table table-result" id="test__results__speed__ip_v4">
+                    <span class="table-result__caption-left"></span>
+                    <span class="table-result__caption">1</span>
+                    <span class="table-result__caption">2</span>
+                    <span class="table-result__caption">3</span>
+                    <span class="table-result__caption">4</span>
+                    <span class="table-result__caption">5</span>
+                    <span class="table-result__caption">6</span>
+                    <span class="table-result__caption">7</span>
+                    <span class="table-result__caption">8</span>
+                    <span class="table-result__caption">9</span>
+                    <span class="table-result__caption">10</span>
+                    <span class="table-result__caption">11</span>
+                    <span class="table-result__caption">12</span>
+                    <span class="table-result__caption">13</span>
+                    <span class="table-result__caption">14</span>
+                    <span class="table-result__caption">15</span>
+                    <span class="table-result__caption">16</span>
+                    <span class="table-result__caption">17</span>
+                    <span class="table-result__caption">18</span>
+                    <span class="table-result__caption">19</span>
+                    <span class="table-result__caption">20</span>
+                    <span class="table-result__caption">Min</span>
+                    <span class="table-result__caption">Max</span>
+                    <span class="table-result__caption">Variance</span>
+
+                    <span class="table-result__caption-left">Download (Mbps)</span>
+                    <span class="table-result__value" id="d-ipv4-t1">-</span>
+                    <span class="table-result__value" id="d-ipv4-t2">-</span>
+                    <span class="table-result__value" id="d-ipv4-t3">-</span>
+                    <span class="table-result__value" id="d-ipv4-t4">-</span>
+                    <span class="table-result__value" id="d-ipv4-t5">-</span>
+                    <span class="table-result__value" id="d-ipv4-t6">-</span>
+                    <span class="table-result__value" id="d-ipv4-t7">-</span>
+                    <span class="table-result__value" id="d-ipv4-t8">-</span>
+                    <span class="table-result__value" id="d-ipv4-t9">-</span>
+                    <span class="table-result__value" id="d-ipv4-t10">-</span>
+                    <span class="table-result__value" id="d-ipv4-t11">-</span>
+                    <span class="table-result__value" id="d-ipv4-t12">-</span>
+                    <span class="table-result__value" id="d-ipv4-t13">-</span>
+                    <span class="table-result__value" id="d-ipv4-t14">-</span>
+                    <span class="table-result__value" id="d-ipv4-t15">-</span>
+                    <span class="table-result__value" id="d-ipv4-t16">-</span>
+                    <span class="table-result__value" id="d-ipv4-t17">-</span>
+                    <span class="table-result__value" id="d-ipv4-t18">-</span>
+                    <span class="table-result__value" id="d-ipv4-t19">-</span>
+                    <span class="table-result__value" id="d-ipv4-t20">-</span>
+                    <span class="table-result__value" id="d-ipv4-min">-</span>
+                    <span class="table-result__value" id="d-ipv4-max">-</span>
+                    <span class="table-result__value" id="d-ipv4-var">-</span>
+
+                    <span class="table-result__caption-left caption-left">Upload (Mbps)</span>
+                    <span class="table-result__value" id="u-ipv4-t1">-</span>
+                    <span class="table-result__value" id="u-ipv4-t2">-</span>
+                    <span class="table-result__value" id="u-ipv4-t3">-</span>
+                    <span class="table-result__value" id="u-ipv4-t4">-</span>
+                    <span class="table-result__value" id="u-ipv4-t5">-</span>
+                    <span class="table-result__value" id="u-ipv4-t6">-</span>
+                    <span class="table-result__value" id="u-ipv4-t7">-</span>
+                    <span class="table-result__value" id="u-ipv4-t8">-</span>
+                    <span class="table-result__value" id="u-ipv4-t9">-</span>
+                    <span class="table-result__value" id="u-ipv4-t10">-</span>
+                    <span class="table-result__value" id="u-ipv4-t11">-</span>
+                    <span class="table-result__value" id="u-ipv4-t12">-</span>
+                    <span class="table-result__value" id="u-ipv4-t13">-</span>
+                    <span class="table-result__value" id="u-ipv4-t14">-</span>
+                    <span class="table-result__value" id="u-ipv4-t15">-</span>
+                    <span class="table-result__value" id="u-ipv4-t16">-</span>
+                    <span class="table-result__value" id="u-ipv4-t17">-</span>
+                    <span class="table-result__value" id="u-ipv4-t18">-</span>
+                    <span class="table-result__value" id="u-ipv4-t19">-</span>
+                    <span class="table-result__value" id="u-ipv4-t20">-</span>
+                    <span class="table-result__value" id="u-ipv4-min">-</span>
+                    <span class="table-result__value" id="u-ipv4-max">-</span>
+                    <span class="table-result__value" id="u-ipv4-var">-</span>
+                </div>
+
+                <h2 class="test-results__title" id="test__results__title__ip_v6"><span
+                        id="label-test__results__v6">Test results IPv6</span>
+                    <button class="btn-reset test-results__download" id="download-results-ipv6__button"></button>
+                </h2>
+
+                
+                <div class="test-result__table table-result" id="test__results__lat__ip_v6">
+                    <span class="table-result__caption-left"></span>
+                    <span class="table-result__caption">1</span>
+                    <span class="table-result__caption">2</span>
+                    <span class="table-result__caption">3</span>
+                    <span class="table-result__caption">4</span>
+                    <span class="table-result__caption">5</span>
+                    <span class="table-result__caption">6</span>
+                    <span class="table-result__caption">7</span>
+                    <span class="table-result__caption">8</span>
+                    <span class="table-result__caption">9</span>
+                    <span class="table-result__caption">10</span>
+                    <span class="table-result__caption">11</span>
+                    <span class="table-result__caption">12</span>
+                    <span class="table-result__caption">13</span>
+                    <span class="table-result__caption">14</span>
+                    <span class="table-result__caption">15</span>
+                    <span class="table-result__caption">16</span>
+                    <span class="table-result__caption">17</span>
+                    <span class="table-result__caption">18</span>
+                    <span class="table-result__caption">19</span>
+                    <span class="table-result__caption">20</span>
+                    <span class="table-result__caption">Min</span>
+                    <span class="table-result__caption">Max</span>
+                    <span class="table-result__caption">Variance</span>
+
+                    <span class="table-result__caption-left">Delay (ms)</span>
+                    <span class="table-result__value" id="p-ipv6-t1">-</span>
+                    <span class="table-result__value" id="p-ipv6-t2">-</span>
+                    <span class="table-result__value" id="p-ipv6-t3">-</span>
+                    <span class="table-result__value" id="p-ipv6-t4">-</span>
+                    <span class="table-result__value" id="p-ipv6-t5">-</span>
+                    <span class="table-result__value" id="p-ipv6-t6">-</span>
+                    <span class="table-result__value" id="p-ipv6-t7">-</span>
+                    <span class="table-result__value" id="p-ipv6-t8">-</span>
+                    <span class="table-result__value" id="p-ipv6-t9">-</span>
+                    <span class="table-result__value" id="p-ipv6-t10">-</span>
+                    <span class="table-result__value" id="p-ipv6-t11">-</span>
+                    <span class="table-result__value" id="p-ipv6-t12">-</span>
+                    <span class="table-result__value" id="p-ipv6-t13">-</span>
+                    <span class="table-result__value" id="p-ipv6-t14">-</span>
+                    <span class="table-result__value" id="p-ipv6-t15">-</span>
+                    <span class="table-result__value" id="p-ipv6-t16">-</span>
+                    <span class="table-result__value" id="p-ipv6-t17">-</span>
+                    <span class="table-result__value" id="p-ipv6-t18">-</span>
+                    <span class="table-result__value" id="p-ipv6-t19">-</span>
+                    <span class="table-result__value" id="p-ipv6-t20">-</span>
+                    <span class="table-result__value" id="p-ipv6-min">-</span>
+                    <span class="table-result__value" id="p-ipv6-max">-</span>
+                    <span class="table-result__value" id="p-ipv6-var">-</span>
+
+                    <span class="table-result__caption-left caption-left">Jitter (ms)</span>
+                    <span class="table-result__value" id="j-ipv6-t1">-</span>
+                    <span class="table-result__value" id="j-ipv6-t2">-</span>
+                    <span class="table-result__value" id="j-ipv6-t3">-</span>
+                    <span class="table-result__value" id="j-ipv6-t4">-</span>
+                    <span class="table-result__value" id="j-ipv6-t5">-</span>
+                    <span class="table-result__value" id="j-ipv6-t6">-</span>
+                    <span class="table-result__value" id="j-ipv6-t7">-</span>
+                    <span class="table-result__value" id="j-ipv6-t8">-</span>
+                    <span class="table-result__value" id="j-ipv6-t9">-</span>
+                    <span class="table-result__value" id="j-ipv6-t10">-</span>
+                    <span class="table-result__value" id="j-ipv6-t11">-</span>
+                    <span class="table-result__value" id="j-ipv6-t12">-</span>
+                    <span class="table-result__value" id="j-ipv6-t13">-</span>
+                    <span class="table-result__value" id="j-ipv6-t14">-</span>
+                    <span class="table-result__value" id="j-ipv6-t15">-</span>
+                    <span class="table-result__value" id="j-ipv6-t16">-</span>
+                    <span class="table-result__value" id="j-ipv6-t17">-</span>
+                    <span class="table-result__value" id="j-ipv6-t18">-</span>
+                    <span class="table-result__value" id="j-ipv6-t19">-</span>
+                    <span class="table-result__value" id="j-ipv6-t20">-</span>
+                    <span class="table-result__value" id="j-ipv6-min">-</span>
+                    <span class="table-result__value" id="j-ipv6-max">-</span>
+                    <span class="table-result__value" id="j-ipv6-var">-</span>
+
+                    <span class="table-result__caption-left caption-left" id="ping__udp6-caption">Ping UDP (ms)</span>
+                    <span class="table-result__value" id="w-ipv6-t1">-</span>
+                    <span class="table-result__value" id="w-ipv6-t2">-</span>
+                    <span class="table-result__value" id="w-ipv6-t3">-</span>
+                    <span class="table-result__value" id="w-ipv6-t4">-</span>
+                    <span class="table-result__value" id="w-ipv6-t5">-</span>
+                    <span class="table-result__value" id="w-ipv6-t6">-</span>
+                    <span class="table-result__value" id="w-ipv6-t7">-</span>
+                    <span class="table-result__value" id="w-ipv6-t8">-</span>
+                    <span class="table-result__value" id="w-ipv6-t9">-</span>
+                    <span class="table-result__value" id="w-ipv6-t10">-</span>
+                    <span class="table-result__value" id="w-ipv6-t11">-</span>
+                    <span class="table-result__value" id="w-ipv6-t12">-</span>
+                    <span class="table-result__value" id="w-ipv6-t13">-</span>
+                    <span class="table-result__value" id="w-ipv6-t14">-</span>
+                    <span class="table-result__value" id="w-ipv6-t15">-</span>
+                    <span class="table-result__value" id="w-ipv6-t16">-</span>
+                    <span class="table-result__value" id="w-ipv6-t17">-</span>
+                    <span class="table-result__value" id="w-ipv6-t18">-</span>
+                    <span class="table-result__value" id="w-ipv6-t19">-</span>
+                    <span class="table-result__value" id="w-ipv6-t20">-</span>
+                    <span class="table-result__value" id="w-ipv6-min">-</span>
+                    <span class="table-result__value" id="w-ipv6-max">-</span>
+                    <span class="table-result__value" id="w-ipv6-var">-</span>
+                </div>
+
+                
+                <div class="test-result__table table-result" id="test__results__speed__ip_v6">
+                    <span class="table-result__caption-left"></span>
+                    <span class="table-result__caption">1</span>
+                    <span class="table-result__caption">2</span>
+                    <span class="table-result__caption">3</span>
+                    <span class="table-result__caption">4</span>
+                    <span class="table-result__caption">5</span>
+                    <span class="table-result__caption">6</span>
+                    <span class="table-result__caption">7</span>
+                    <span class="table-result__caption">8</span>
+                    <span class="table-result__caption">9</span>
+                    <span class="table-result__caption">10</span>
+                    <span class="table-result__caption">11</span>
+                    <span class="table-result__caption">12</span>
+                    <span class="table-result__caption">13</span>
+                    <span class="table-result__caption">14</span>
+                    <span class="table-result__caption">15</span>
+                    <span class="table-result__caption">16</span>
+                    <span class="table-result__caption">17</span>
+                    <span class="table-result__caption">18</span>
+                    <span class="table-result__caption">19</span>
+                    <span class="table-result__caption">20</span>
+                    <span class="table-result__caption">Min</span>
+                    <span class="table-result__caption">Max</span>
+                    <span class="table-result__caption">Variance</span>
+
+                    <span class="table-result__caption-left">Download (Mbps)</span>
+                    <span class="table-result__value" id="d-ipv6-t1">-</span>
+                    <span class="table-result__value" id="d-ipv6-t2">-</span>
+                    <span class="table-result__value" id="d-ipv6-t3">-</span>
+                    <span class="table-result__value" id="d-ipv6-t4">-</span>
+                    <span class="table-result__value" id="d-ipv6-t5">-</span>
+                    <span class="table-result__value" id="d-ipv6-t6">-</span>
+                    <span class="table-result__value" id="d-ipv6-t7">-</span>
+                    <span class="table-result__value" id="d-ipv6-t8">-</span>
+                    <span class="table-result__value" id="d-ipv6-t9">-</span>
+                    <span class="table-result__value" id="d-ipv6-t10">-</span>
+                    <span class="table-result__value" id="d-ipv6-t11">-</span>
+                    <span class="table-result__value" id="d-ipv6-t12">-</span>
+                    <span class="table-result__value" id="d-ipv6-t13">-</span>
+                    <span class="table-result__value" id="d-ipv6-t14">-</span>
+                    <span class="table-result__value" id="d-ipv6-t15">-</span>
+                    <span class="table-result__value" id="d-ipv6-t16">-</span>
+                    <span class="table-result__value" id="d-ipv6-t17">-</span>
+                    <span class="table-result__value" id="d-ipv6-t18">-</span>
+                    <span class="table-result__value" id="d-ipv6-t19">-</span>
+                    <span class="table-result__value" id="d-ipv6-t20">-</span>
+                    <span class="table-result__value" id="d-ipv6-min">-</span>
+                    <span class="table-result__value" id="d-ipv6-max">-</span>
+                    <span class="table-result__value" id="d-ipv6-var">-</span>
+
+                    <span class="table-result__caption-left caption-left">Upload (Mbps)</span>
+                    <span class="table-result__value" id="u-ipv6-t1">-</span>
+                    <span class="table-result__value" id="u-ipv6-t2">-</span>
+                    <span class="table-result__value" id="u-ipv6-t3">-</span>
+                    <span class="table-result__value" id="u-ipv6-t4">-</span>
+                    <span class="table-result__value" id="u-ipv6-t5">-</span>
+                    <span class="table-result__value" id="u-ipv6-t6">-</span>
+                    <span class="table-result__value" id="u-ipv6-t7">-</span>
+                    <span class="table-result__value" id="u-ipv6-t8">-</span>
+                    <span class="table-result__value" id="u-ipv6-t9">-</span>
+                    <span class="table-result__value" id="u-ipv6-t10">-</span>
+                    <span class="table-result__value" id="u-ipv6-t11">-</span>
+                    <span class="table-result__value" id="u-ipv6-t12">-</span>
+                    <span class="table-result__value" id="u-ipv6-t13">-</span>
+                    <span class="table-result__value" id="u-ipv6-t14">-</span>
+                    <span class="table-result__value" id="u-ipv6-t15">-</span>
+                    <span class="table-result__value" id="u-ipv6-t16">-</span>
+                    <span class="table-result__value" id="u-ipv6-t17">-</span>
+                    <span class="table-result__value" id="u-ipv6-t18">-</span>
+                    <span class="table-result__value" id="u-ipv6-t19">-</span>
+                    <span class="table-result__value" id="u-ipv6-t20">-</span>
+                    <span class="table-result__value" id="u-ipv6-min">-</span>
+                    <span class="table-result__value" id="u-ipv6-max">-</span>
+                    <span class="table-result__value" id="u-ipv6-var">-</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="test-results" id="test__results_s2w" hidden>
+            <div class="test-table__caption__wait">
+                <span id="start_test_to_url_wait_title">Testing</span><span id="start_test_to_url_wait" data-value="0"></span>
+            </div>
+            
+            <div class="container">
+                <div id="server-url-threshold" class="test-div__Threshold">
+                    <div>建議閥值 (Threshold)</div>
+                    <table data-id="serverUrlThreshold">
+                        <thead>
+                            <tr>
+                                <th class="left" data-id="state">state</th>
+                                <th class="middle" data-id="rsponseTime">Response time (latency)</th>
+                                <th class="right" data-id="description">description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-id="state_good">good</td>
+                                <td>&lt;100ms</td>
+                                <td data-id="description_good">The server responds quickly and the network is stable</td>
+                            </tr>
+                            <tr>
+                                <td data-id="state_ordinary">ordinary</td>
+                                <td>100ms~300ms</td>
+                                <td data-id="description_ordinary">General network conditions, which may be affected by region or load</td>
+                            </tr>
+                            <tr>
+                                <td data-id="state_congestion">congestion</td>
+                                <td>&gt;300ms</td>
+                                <td data-id="description_congestion">There may be network congestion, high server load, or ISP issues.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> 
+            </div>
+                      
+            <div class="container">
+                <span class="test-table__caption" id="charts__title__ip_v4_s2w">
+                    Network line quality test
+                </span>
+                <div class="test-table__description">
+                    <span id="description__tip__ip_v4_s2w">Test method : </span>
+                    <div id="description__ip_v4_s2w">Test 20 times in sequence with HTTP Method HEAD (each test timeout is 3 seconds), and the total test time will be terminated immediately if it exceeds 5 seconds), calculate the average response time (ms), and use colors to indicate its status. If the endpoint does not support the HTTP communication protocol, it will display "No data"</div>
+                </div>
+                
+                <div data-id="ipv4" hidden>
+                    <div class="graphs" id="charts__ip_v4_s2w">
+                        <div class="graphs__img" id="chart__ping-IPv4_s2w"></div>
+                        <div class="graphs__img" id="chart__jitter-IPv4_s2w"></div>
+                    </div>
+                    <h2 class="test-results__title"><span id="label-test__results__v4_s2w">Test results IPv4</span></h2>
+                    
+                    <div class="test-result__table table-result" id="test__results__lat__ip_v4_s2w">
+                        <span class="table-result__caption-left"></span>
+                        <span class="table-result__caption">1</span>
+                        <span class="table-result__caption">2</span>
+                        <span class="table-result__caption">3</span>
+                        <span class="table-result__caption">4</span>
+                        <span class="table-result__caption">5</span>
+                        <span class="table-result__caption">6</span>
+                        <span class="table-result__caption">7</span>
+                        <span class="table-result__caption">8</span>
+                        <span class="table-result__caption">9</span>
+                        <span class="table-result__caption">10</span>
+                        <span class="table-result__caption">11</span>
+                        <span class="table-result__caption">12</span>
+                        <span class="table-result__caption">13</span>
+                        <span class="table-result__caption">14</span>
+                        <span class="table-result__caption">15</span>
+                        <span class="table-result__caption">16</span>
+                        <span class="table-result__caption">17</span>
+                        <span class="table-result__caption">18</span>
+                        <span class="table-result__caption">19</span>
+                        <span class="table-result__caption">20</span>
+                        <span class="table-result__caption">Min</span>
+                        <span class="table-result__caption">Max</span>
+                        <span class="table-result__caption">Variance</span>
+
+                        <span class="table-result__caption-left">Delay (ms)</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t1_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t2_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t3_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t4_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t5_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t6_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t7_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t8_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t9_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t10_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t11_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t12_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t13_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t14_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t15_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t16_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t17_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t18_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t19_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-t20_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-min_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-max_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="p-ipv4-var_s2w">-</span>
+
+                        <span class="table-result__caption-left caption-left">Jitter (ms)</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t1_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t2_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t3_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t4_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t5_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t6_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t7_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t8_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t9_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t10_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t11_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t12_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t13_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t14_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t15_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t16_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t17_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t18_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t19_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-t20_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-min_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-max_s2w">-</span>
+                        <span data-clear="-" class="table-result__value" id="j-ipv4-var_s2w">-</span>
+                    </div>
+                    <div id="label_icpm-IPv4_s2w" data-label="test_ICMP"><span>Test method : </span><span>Test IP 20 times continuously using ICMP and output the results</span></div>
+                    
+                    <div class="graphs" id="charts_icpm_ip_v4_s2w">
+                        <div class="graphs__img" id="chart__icpm-IPv4__s2w"></div>
+                    </div>
+
+                    <div id="label_route-IPv4_s2w" data-label="test_trace_route"><span>Test method : </span><span>Test IP 20 times continuously using ICMP and output the results</span></div>
+                    <table class="tableTmp1" id="table_icpm-IPv4_s2w">
+                        <tfoot>
+                        <tr>
+                            <td colspan="4"><span data-label="max">Max</span> <span data-clear="0" data-label="ip4-max-value">0</span> ms, <span data-label="min">Min</span> <span data-clear="0" data-label="ip4-min-value">0</span> ms, <span data-label="avg">Average</span> <span data-clear="0" data-label="ip4-avg-value">0</span> ms, <span data-label="avgDev">Average deviation</span> <span data-clear="0" data-label="ip4-avgDev-value">0</span> ms</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><span data-label="deliver">Deliver</span> <span data-clear="0" data-label="ip4-deliver-value">0</span>, <span data-label="receive">Receive</span> <span  data-clear="0" data-label="ip4-receive-value">0</span>, <span data-label="lost">Lost</span> <span  data-clear="0" data-label="ip4-lost-value">0</span></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <table class="tableTmp1" id="table_traceroute-IPv4_s2w">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th data-label="test_server_start">Server start</th>
+                            <th data-label="respond_host">Respond host</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-temp="1">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    
+
+    <footer class="footer">
+        <div class="container">
+            <div id="footer" class="footer__beta"> v1.4.0 from 2025-03-14 11:03:38 2d4ef14f</div>
+        </div>
+    </footer>
+
+    <div class="go-to-top"></div>
+</div>
+
+
+<div id="popup-high-speed" class="popup">
+    <div class="popup__body">
+        <div class="popup__content highspeed">
+            <div class="popup__highspeed">
+                <div class="popup__title highspeed" data-label="high-speed__title" id="popup-high-speed__title">High-Speed test account list</div>
+                <div class="popup__highspeed__closeDiv"><a href="#" class="popup__close close-popup highspeed"></a></div>
+            </div>
+            <div class="popup__highspeed__Line">&nbsp;</div>
+            <div class="popup__highspeed__tip" data-label="high-speed__tip">※ The accounts set up here all have 100GB speed test privileges :</div>
+            <div class="popup__form form" id="high-speed__form">
+                <table class="tableTmp2" id="table_route-IPv4_s2w">
+                    <thead>
+                        <tr>
+                            <th align="left">&nbsp;</th>
+                            <th align="left"><div data-label="high-speed__account">Account</div></th>
+                            <th align="left"><div data-label="high-speed__name">Name</div></th>
+                            <th align="left"><div data-label="high-speed__permissions">Permissions</div></th>
+                            <th align="left"><div data-label="high-speed__operate">Operate</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-temp="1" id="popup-high-speed-row" hidden>
+                            <td>0</td>
+                            <td class="popup__highspeed__td_align_left"><span></span></td>
+                            <td class="popup__highspeed__td_align_left"><span></span></td>
+                            <td><div class="popup__highspeed__div_manager"><input type="checkbox"><label data-label="high-speed__manager">Manager</label></div></td>
+                            <td><button class="popup__highspeed__button_delete" data-label="high-speed__delete" data-id="popup-high-speed__delete" type="button">Delete</button></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr data-temp="1" class="popup__highspeed__tr_line">
+                            <td><button id="highspeedListAddBt1" class="popup__highspeed__button_add" type="button">+</button></td>
+                            <td data-hidden="1" class="popup__highspeed__td_align_left norightLine"><input class="popup__highspeed__input_account" data-label="high-speed_placeholder_account" type="text" name="account" placeholder="Please enter your account"></td>
+                            <td data-hidden="1" class="norightLine"><input class="popup__highspeed__input_account" data-label="high-speed_placeholder_name" type="text" name="displayName" placeholder="Please enter your name" maxlength="20"></td>
+                            <td data-hidden="1" class="norightLine"><div class="popup__highspeed__div_manager"><input type="checkbox" name="manager"><label  data-label="high-speed__manager">Manager</label></div></td>
+                            <td data-hidden="1"><button id="high-speed__add" class="popup__highspeed__button_delete" data-label="high-speed__add" type="button" >Add</button></td>
+                        </tr>
+                    <tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popup-login" class="popup">
+    <div class="popup__body">
+        <div class="popup__content">
+            <a href="#" class="popup__close close-popup"></a>
+            <div class="popup__title" id="popup-login__title">Login</div>
+            <div class="popup__form form" id="login__form">
+                <input type="text" class="form__input" placeholder="Username" id="username">
+                <input type="password" class="form__input" placeholder="Password" id="password">
+                <button class="form__btn btn-reset header__btn" id="popup-login__btn">Login</button>
+                <button class="form__btn form__btn--id btn-reset header__btn hidden" id="popup-openid__btn">Open ID
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popup-joinroom" class="popup">
+    <div class="popup__body">
+        <div class="popup__content">
+            <a href="#" class="popup__close close-popup"></a>
+            <div class="popup__title" id="popup-join__room__title">Join room</div>
+            <div class="popup__form form">
+                <input type="text" class="form__input" placeholder="Session ID" id="session__id">
+                <button class="form__btn btn-reset header__btn" id="popup-btn__join">Join</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popup-release__note" class="popup popup-release__note">
+    <div class="popup__body">
+        <div class="popup__content">
+        </div>
+    </div>
+</div>
+
+
+<div id="popup-session" class="popup">
+    <div class="popup__body">
+        <div class="popup__content">
+            <a href="#" class="popup__close close-popup"></a>
+            <div class="popup__title" id="popup-session__title">You have the group</div>
+            <div class="popup__form form">
+                <div class="form__chekbox">
+                    <input type="radio" name="session" value="new" checked>
+                    <label for="newSession" id="popup-session__new__group__label">Create new group</label>
+                </div>
+                <div class="form__chekbox">
+                    <input type="radio" name="session" value="old">
+                    <label for="sessionId" id="popup-session__old__group__label"></label>
+                </div>
+                <button class="form__btn btn-reset header__btn" id="popup-session__confirm">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popup-info" class="popup">
+    <div class="popup__body">
+        <div class="popup__content">
+            <a href="#" class="popup__close close-popup"></a>
+            <div class="popup__title" id="popup-info__text"></div>
+            <div class="popup__form form">
+                <button class="form__btn btn-reset header__btn" id="popup-info__close">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popup-warning" class="popup">
+    <div class="popup__body">
+        <div class="popup__content">
+            <a href="#" class="popup__close close-popup"></a>
+            <div class="popup__title" id="popup-warning__text"></div>
+            <div class="popup__warning_form">
+                <button class="form__btn btn-reset header__btn popup__warning_btn" id="warning-ok__btn"></button>
+                <button class="form__btn btn-reset header__btn popup__warning_btn" id="warning-cancel__btn"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script src="public/js/jquery.min.js"></script>
+<script src="public/js/choices.min.js"></script>
+<script src="public/js/apexcharts.js"></script>
+<script src="public/js/showdown.min.js"></script>
+<script src="public/js/core.js"></script>
+<script src="public/js/popup.js"></script>
+<script src="public/js/cookie/cookie.js"></script>
+<script src="public/js/auth/common.js"></script>
+<script src="public/js/dropdown.js"></script>
+<script src="public/js/translator.js"></script>
+<script src="public/js/main.js"></script>
+
+<script src="public/js/clientlogger/logger.js"></script>
+<script src="public/js/configchecker/config.js"></script>
+<script src="public/js/sysinfo/sysinfocollector.js"></script>
+<script src="public/js/auth/trx/auth.js"></script>
+<script src="public/js/auth/standard/auth.js"></script>
+<script src="public/js/auth/openid/auth.js"></script>
+<script src="public/js/sessionchecker/checker.js"></script>
+<script src="public/js/dateholder/holder.js"></script>
+<script src="public/js/logger/logger.js"></script>
+<script src="public/js/single/uiworker.js"></script>
+<script src="public/js/ipchecker/checker.js"></script>
+<script src="public/js/serversholder/holder.js"></script>
+<script src="public/js/reporter/reporter.js"></script>
+<script src="public/js/latencyworker/http/latency.js"></script>
+<script src="public/js/latencyworker/webrtc/latency.js"></script>
+<script src="public/js/ticker/ticker.js"></script>
+<script src="public/js/resultsupdater/resultsui.js"></script>
+<script src="public/js/charts/chartsworker.js"></script>
+<script src="public/js/speedtestworker/speedtest.js"></script>
+<script src="public/js/csvloader/csv.js"></script>
+<script src="public/js/releasenoteholder/holder.js"></script>
+
+<script src="public/js/advancedwebtest/structures.js"></script>
+<script src="public/js/advancedwebtest/advanced_web_test.js"></script>
+<script src="public/js/single/single.js"></script>
+<script src="public/js/single/group.js"></script>
+<script src="public/js/group/dashboard/dashboard.js"></script>
+<script src="public/js/single/translation.js"></script>
+<script src="public/js/single/main.js"></script>
+
+
+</html>
