@@ -32,6 +32,13 @@ async function getIPConfig(token) {
     return resp.json();
 }
 
+async function authServer(server, token) {
+    const resp = await fetch(`${server}/auth?session=${token}`);
+    if (!resp.ok) throw new Error('Auth failed on ' + server + ': ' + resp.status);
+    const text = (await resp.text()).trim();
+    if (text !== 'Ok') throw new Error('Auth rejected on ' + server);
+}
+
 async function getIp(server, token) {
     const resp = await fetch(`${server}/getIp?session=${token}`);
     if (!resp.ok) throw new Error('Failed to get IP from ' + server);
@@ -57,13 +64,17 @@ async function run() {
         if (cfg.servers_for_ipv4 && cfg.servers_for_ipv4.length > 0) {
             const s = cfg.servers_for_ipv4[0];
             const addr = `${s.proto}://${s.ip}:${s.port}`;
-            const res = await getIp(addr, token);
+            const ipToken = uuidv4();
+            await authServer(addr, ipToken);
+            const res = await getIp(addr, ipToken);
             ipText += `IPv4: ${res.ip}\n`;
         }
         if (cfg.servers_for_ipv6 && cfg.servers_for_ipv6.length > 0) {
             const s = cfg.servers_for_ipv6[0];
             const addr = `${s.proto}://${s.ip}:${s.port}`;
-            const res = await getIp(addr, token);
+            const ipToken = uuidv4();
+            await authServer(addr, ipToken);
+            const res = await getIp(addr, ipToken);
             ipText += `IPv6: ${res.ip}\n`;
         }
         out.textContent += ipText;
