@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speedtest Info Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        pre { background: #f4f4f4; padding: 1em; }
+    </style>
+</head>
+<body>
+<h1>Speedtest Info Demo</h1>
+<button id="run">Load Info</button>
+<pre id="output"></pre>
+
+<script src="public/js/core.js"></script>
+<script>
+const BASE_URL = getLocationAddress();
+
+async function getAccessToken() {
+    const token = uuidv4();
+    const resp = await fetch(`${BASE_URL}/auth?session=${token}`);
+    if (!resp.ok) throw new Error('Auth failed: ' + resp.status);
+    const text = (await resp.text()).trim();
+    if (text !== 'Ok') throw new Error('Auth rejected');
+    return token;
+}
+
+async function getIPConfig(token) {
+    const resp = await fetch(`${BASE_URL}/getCheckIpConfig?session=${token}`);
+    if (!resp.ok) throw new Error('Failed to get IP config: ' + resp.status);
+    return resp.json();
+}
+
+async function getIp(server, token) {
+    const resp = await fetch(`${server}/getIp?session=${token}`);
+    if (!resp.ok) throw new Error('Failed to get IP from ' + server);
+    return resp.json();
+}
+
+async function getServers(token) {
+    const resp = await fetch(`${BASE_URL}/getServers?session=${token}`);
+    if (!resp.ok) throw new Error('Failed to get servers list: ' + resp.status);
+    return resp.json();
+}
+
+async function run() {
+    const out = document.getElementById('output');
+    out.textContent = 'Loading...\n';
+    try {
+        const token = await getAccessToken();
+        out.textContent += `Access token: ${token}\n`;
+
+        const cfg = await getIPConfig(token);
+        out.textContent += 'IP Configuration loaded.\n';
+        let ipText = '';
+        if (cfg.servers_for_ipv4 && cfg.servers_for_ipv4.length > 0) {
+            const s = cfg.servers_for_ipv4[0];
+            const addr = `${s.proto}://${s.ip}:${s.port}`;
+            const res = await getIp(addr, token);
+            ipText += `IPv4: ${res.ip}\n`;
+        }
+        if (cfg.servers_for_ipv6 && cfg.servers_for_ipv6.length > 0) {
+            const s = cfg.servers_for_ipv6[0];
+            const addr = `${s.proto}://${s.ip}:${s.port}`;
+            const res = await getIp(addr, token);
+            ipText += `IPv6: ${res.ip}\n`;
+        }
+        out.textContent += ipText;
+
+        const serversResp = await getServers(token);
+        const servers = serversResp.servers || [];
+        out.textContent += `\nAvailable servers (${servers.length}):\n`;
+        servers.forEach(s => {
+            out.textContent += `- ${s.name} (${s.proto}://${s.ip}:${s.port})\n`;
+        });
+    } catch (err) {
+        out.textContent += 'Error: ' + err.message;
+    }
+}
+
+document.getElementById('run').addEventListener('click', run);
+</script>
+</body>
+</html>
